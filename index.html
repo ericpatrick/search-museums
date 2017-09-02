@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Search Places</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <header class="app-header">
+    <h1 class="app-title">Search Places</h1>
+  </header>
+  <main class="app-container">
+    <nav>
+      <div class="search-group">
+        <input class="search-input" type="text" name="" id="" placeholder="Type a location">
+        <button class="search-button">Search</button>
+      </div>
+      <ul class="museum-list" data-bind="foreach: placesList">
+        <li class="museum-list-item" data-bind="text: name, click: $parent.showMapInfo" />
+      </ul>
+    </nav>
+    <div id=map></div>
+  </main>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+  <script>
+    var map;
+    var infowindow;
+    function initMap() {
+      var pyrmont = new google.maps.LatLng(40.730610, -73.935242);
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: pyrmont,
+        zoom: 8
+      });
+
+      var request = {
+        location: pyrmont,
+        radius: '50000',
+        types: ['museum']
+      };
+
+      infowindow = new google.maps.InfoWindow();
+      service = new google.maps.places.PlacesService(map);
+      service.nearbySearch(request, function (results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          var maxItems = 20;
+          var length = (results.length <= maxItems) ? results.length : maxItems;
+          for (var i = 0; i < length; i++) {
+            createMarker(results[i]);
+            appViewModel.addPlaces(results[i]);
+          }
+        }
+      });
+
+      // fetch("https://en.wikipedia.org/w/api.php?action=opensearch&search=crominia&format=json&&origin=*", {
+      //   method: 'GET',
+      //   headers: new Headers({
+      //     'Content-Type': 'application/json',
+      //     'Accept': 'application/json'
+      //   })
+      // })
+      // .then(function (response) {
+      //     return response.json();
+      // })
+      // .then(function (json) {
+      //     console.log(json);
+      // })
+      // .catch(function (error) {
+      //     console.log(error);
+      // });
+      // $.getJSON("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670,151.1957&radius=500&types=food&name=cruise&key=AIzaSyCosZ5T2h_k3365OBWMXBwd-6kKFf0n_xE", function(data) {
+      //   console.log(data);
+      // });
+      // var xhr = new XMLHttpRequest();
+      // xhr.open('GET', "https://cors-anywhere.herokuapp.com/https://api.yelp.com/oauth2/token");
+      // xhr.onload = function() {
+      //   var responseText = xhr.responseText;
+      //   console.log(responseText);
+      // };
+      // xhr.onerror = function() {
+      //   console.log('There was an error!');
+      // };
+      // // xhr.withCredentials = true;
+      // xhr.send(JSON.stringify({
+      //     client_id: "KaCoQUjmrwJqtpZgwUQpRg",
+      //     client_secret: "6qcMiSBoK9DxuhEwpa8mEbyjAyLeTGVhuN1Z2pLc0z17oy5XxcXP9t4RssxBBcqH"
+      //   }));
+      // $.ajax({
+      //   type : "GET",
+      //   dataType : "json",
+      //   url : "https://en.wikipedia.org/w/api.php?action=opensearch&search=crominia&format=json&&origin=*",
+      //   // data : {
+      //   //   client_id: "KaCoQUjmrwJqtpZgwUQpRg",
+      //   //   client_secret: "6qcMiSBoK9DxuhEwpa8mEbyjAyLeTGVhuN1Z2pLc0z17oy5XxcXP9t4RssxBBcqH"
+      //   // },
+      //   success: function(data){
+      //     console.log(data);
+      //   }
+      // });
+    }
+
+    function createMarker(place) {
+      var placeLoc = place.geometry.location;
+      var marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location
+      });
+
+      google.maps.event.addListener(marker, 'click', function () {
+        infowindow.setContent(place.name);
+        infowindow.setOptions({
+          pixelOffset: new google.maps.Size(0, 0)
+        });
+        infowindow.open(map, this);
+      });
+    }
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCosZ5T2h_k3365OBWMXBwd-6kKFf0n_xE&callback=initMap"
+    async defer></script>
+</body>
+
+</html>
