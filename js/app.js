@@ -43,4 +43,10 @@ var ViewModel = function () {
       item.visible(visible);
     });
   }
+
+  this.toggleMenuList = function() {
+    $(".museum-nav").toggleClass("is-close");
+    $(".content").toggleClass("expanded");
+    setTimeout(function(){ google.maps.event.trigger(self.map.instance, 'resize'); }, 400);
+  }
 };

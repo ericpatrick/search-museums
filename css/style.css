@@ -8,6 +8,10 @@ html, body {
   padding: 0;
 }
 
+.app-container {
+  height: 100%;
+}
+
 .app-header {
   width: 100%;
   height: 50px;
@@ -15,16 +19,11 @@ html, body {
   color: #fff;
   text-align: center;
   padding: 5px 0;
+  display: flex;
 }
 
 .app-header .app-title {
-  margin: 0px;
-}
-
-.app-container {
-  display: flex;
-  flex-flow: row;
-  height: calc(100% - 50px);
+  margin: 0 auto;
 }
 
 nav {
@@ -32,11 +31,24 @@ nav {
   width: 360px;
   background-color: #1b1b1b;
   padding: 0 14px;
+  position: absolute;
+  z-index: 1;
+}
+
+.content {
+  transition: width 0.5s;
+  width: calc(100% - 360px);
+  float: right;
+  height: 100%;
+}
+
+.content.expanded {
+  width: 100%;
 }
 
 #map {
-  height: 100%;
-  width: calc(100% - 360px);
+  height: calc(100% - 50px);
+  width: 100%;
 }
 
 .search-group {
@@ -61,7 +73,7 @@ nav {
   padding: 0;
   margin: 25px auto;
   height: calc(100% - 120px);
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .museum-list-item {
@@ -72,4 +84,16 @@ nav {
 .museum-list-item:hover {
   background-color: #353535;
   cursor: pointer;
+}
+
+.museum-nav {
+  transition: transform 0.5s;
+}
+
+.museum-nav.is-close {
+  transform: translateX(-360px);
+}
+
+.menu-icon {
+  margin: 12px 0px;
 }

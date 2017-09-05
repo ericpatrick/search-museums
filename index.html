@@ -8,14 +8,12 @@
   <title>Search Places</title>
 
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css">
 </head>
 
 <body>
-  <header class="app-header">
-    <h1 class="app-title">Search Places</h1>
-  </header>
   <main class="app-container">
-    <nav>
+    <nav class="museum-nav">
       <div class="search-group">
         <input class="search-input" type="text" placeholder="Type a location" data-bind="textInput: searchTerm">
         <button class="search-button" data-bind="click: filterPlaces">Search</button>
@@ -24,7 +22,13 @@
         <li class="museum-list-item" data-bind="text: place.name, click: $parent.showMapInfo.bind($parent)" />
       </ul>
     </nav>
-    <div id=map></div>
+    <div class="content">
+      <header class="app-header">
+        <i class="menu-icon fa fa-bars" aria-hidden="true" data-bind="click: toggleMenuList"></i>
+        <h1 class="app-title">Search Places</h1>
+      </header>
+      <div id=map></div>
+    </div>
   </main>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous"></script>
