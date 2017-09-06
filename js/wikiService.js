@@ -1,5 +1,5 @@
-var WikiService = function() {
-  this.search = function(term, cbSucess, cbError) {
+var WikiService = function () {
+  this.search = function (term, cbSucess, cbError) {
     let validTerm = term || "";
     let encodedTerm = validTerm.split(" ").join("+");
     fetch(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodedTerm}&format=json&&origin=*`, {
@@ -9,18 +9,19 @@ var WikiService = function() {
         'Accept': 'application/json'
       })
     })
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (result) {
-      if (cbSucess)
-        cbSucess(result);
-    })
-    .catch(function (error) {
-      console.log(error);
-      if (cbError)
-        cdError(error);
-  });
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (result) {
+        if (cbSucess)
+          cbSucess(result);
+      })
+      .catch(function (error) {
+        console.log(error);
+        if (cbError) {
+          cbError(error);
+        }
+      });
   }
 }
 

@@ -5,28 +5,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Search Places</title>
+  <title>Search Museums</title>
 
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" media="(max-width: 640px)" href="css/devices.css" />
   <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css">
 </head>
 
 <body>
   <main class="app-container">
-    <nav class="museum-nav">
-      <div class="search-group">
-        <input class="search-input" type="text" placeholder="Type a location" data-bind="textInput: searchTerm">
-        <button class="search-button" data-bind="click: filterPlaces">Search</button>
-      </div>
-      <ul class="museum-list" data-bind="foreach: filteredList">
-        <li class="museum-list-item" data-bind="text: place.name, click: $parent.showMapInfo.bind($parent)" />
-      </ul>
-    </nav>
+    <header class="app-header">
+      <h1 class="app-title">Search Museums</h1>
+    </header>
     <div class="content">
-      <header class="app-header">
-        <i class="menu-icon fa fa-bars" aria-hidden="true" data-bind="click: toggleMenuList"></i>
-        <h1 class="app-title">Search Places</h1>
-      </header>
+      <div class="menu-icon" data-bind="click: toggleMenuList">
+        <i class="fa fa-close fa-lg" aria-hidden="true"></i>
+      </div>
+      <nav class="museum-nav">
+        <div class="search-group">
+          <input class="search-input" type="text" placeholder="Type a location" data-bind="textInput: searchTerm">
+          <button class="search-button" data-bind="click: filterPlaces">Search</button>
+        </div>
+        <ul class="museum-list" data-bind="foreach: filteredList">
+          <li class="museum-list-item" data-bind="text: place.name, click: $parent.showMapInfo.bind($parent)" />
+        </ul>
+      </nav>
       <div id=map></div>
     </div>
   </main>

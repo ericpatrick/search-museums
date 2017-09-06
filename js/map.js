@@ -1,25 +1,26 @@
-var Map = function() {
+var Map = function () {
   const self = this
-  this.center = new google.maps.LatLng(40.730610, -73.935242);
+  this.center = new google.maps.LatLng(40.758896, -73.985130);
   this.infowindow = new google.maps.InfoWindow();
   this.searchService;
   this.instance;
   this.markers = [];
 
-  this.init = function() {
+  this.init = function () {
     this.instance = new google.maps.Map(document.getElementById('map'), {
       center: this.center,
-      zoom: 12
+      zoom: 12,
+      mapTypeControl: false
     });
     this.searchService = new google.maps.places.PlacesService(this.instance);
     // this.getPlaces();
   }
 
-  this.getPlaces = function(term = "", callback) {
+  this.getPlaces = function (term = "", callback) {
     const self = this;
     let params = {
       location: this.center,
-      radius: '50000',
+      radius: '4000',
       types: ['museum'],
       name: term
     };
@@ -44,20 +45,21 @@ var Map = function() {
       title: place.name
     });
     this.markers.push(marker);
-  
+
     google.maps.event.addListener(marker, 'click', function () {
       const infoOffset = new google.maps.Size(0, 0);
       self.openInfo(place.name, infoOffset, null, this);
     });
   }
 
-  this.openInfo = function(placeName, infoOffset, position, anchor = null) {
-    const marker = this.markers.find(function(marker) {
+  this.openInfo = function (placeName, infoOffset, position, anchor = null) {
+    const marker = this.markers.find(function (marker) {
       return placeName === marker.title;
     });
-    const callback = function(result) {
-      const moreInfo = (result[1].length > 0) ? `<p><a href="${result[3][0]}" target="_blank">More Info</a></p>`: "<p>No more info was find</p>";
-      const infoContent = `<p>${placeName}</p>${moreInfo}`;
+    const callback = function (result) {
+      const ref = (Array.isArray(result) && result[1].length > 0) ? result[3][0] : "";
+      const moreInfo = (ref.length > 0) ? `<p><a href="${result[3][0]}" target="_blank">More Information About It</a></p>` : "<p>No Information Found</p>";
+      const infoContent = `<h3>${placeName}</h3>${moreInfo}`;
       self.infowindow.setContent(infoContent);
       self.infowindow.setOptions({
         pixelOffset: infoOffset
@@ -68,15 +70,15 @@ var Map = function() {
       self.infowindow.open(self.instance, anchor);
     };
 
-    wikiService.search(placeName, callback);
+    wikiService.search(placeName, callback, callback);
     if (marker) {
       marker.setAnimation(google.maps.Animation.BOUNCE);
-      setTimeout(function(){ marker.setAnimation(null); }, 1500);
+      setTimeout(function () { marker.setAnimation(null); }, 1500);
     }
   }
 
-  this.filterMarkers = function(term) {
-    this.markers.forEach(function(marker) {
+  this.filterMarkers = function (term) {
+    this.markers.forEach(function (marker) {
       const markerTitle = marker.title.toLowerCase();
       const searctTerm = term.toLowerCase();
       const markerMap = (markerTitle.indexOf(searctTerm) !== -1) ? self.instance : null;
