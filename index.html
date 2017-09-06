@@ -42,11 +42,16 @@
       ko.applyBindings(appViewModel);
       appViewModel.init();
     }
+
+    function mapLoadError() {
+      alert("Sorry, a error occurred during map load. Try refresh the page!");
+    }
   </script>
   <script src="js/wikiService.js"></script>
   <script src="js/map.js"></script>
   <script src="js/app.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyCosZ5T2h_k3365OBWMXBwd-6kKFf0n_xE&callback=initMap"
+    onerror="mapLoadError()"
     async defer></script>
 </body>
 

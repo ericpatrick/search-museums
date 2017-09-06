@@ -17,6 +17,7 @@ var WikiService = function () {
           cbSucess(result);
       })
       .catch(function (error) {
+        alert("Unexpected error occurred during information searching.");
         console.log(error);
         if (cbError) {
           cbError(error);
